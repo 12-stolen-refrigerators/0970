@@ -1,0 +1,146 @@
+<!-- ================ start banner area ================= -->	
+	<section class="blog-banner-area" id="category">
+		<div class="container h-100">
+			<div class="blog-banner">
+				<div class="text-center">
+					<h1>Регистрация</h1>
+					<nav aria-label="breadcrumb" class="banner-breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="/">Главная</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Регистрация</li>
+            </ol>
+          </nav>
+				</div>
+			</div>
+    </div>
+	</section>
+	<!-- ================ end banner area ================= -->
+
+<!--================Login Box Area =================-->
+	<section class="login_box_area section-margin">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="login_box_img">
+						<div class="hover">
+							<h4>Вы уже зарегистрированы?</h4>
+							<p>Регистрация даёт доступ к личному кабинету, управлению заказами и дополнительные бонусы</p>
+							<a class="button button-account" href="/login">Вход в личный кабинет</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="login_form_inner register_form_inner">
+						<h3>Зарегистрироваться</h3>
+						<form 
+						class="row login_form" 
+						onsubmit="sendForm(this); 
+						return false;">
+							<div class="col-md-12 form-group">
+								<input 
+								required
+								type="text" 
+								class="form-control" 
+								name="name" 
+								placeholder="Имя" 
+								onfocus="this.placeholder = ''" 
+								onblur="this.placeholder = 'Имя'"
+								autocomplete="name"
+								/>
+							</div>
+							<div class="col-md-12 form-group">
+								<input 
+								required
+								type="text" 
+								class="form-control" 
+								name="lastname" 
+								placeholder="Фамилия" 
+								onfocus="this.placeholder = ''" 
+								onblur="this.placeholder = 'Фамилия'"
+								autocomplete="lastname"
+								/>
+							</div>
+							<div class="col-md-12 form-group">
+								<input 
+								required
+								type="email" 
+								class="form-control" 
+								name="email" 
+								placeholder="Email" 
+								onfocus="this.placeholder = ''" 
+								onblur="this.placeholder = 'Email'"
+								autocomplete="email"
+								/>
+							</div>
+							<div class="col-md-12 form-group">
+								<input 
+								required
+								type="text" 
+								class="form-control" 
+								name="pass" 
+								placeholder="Пароль" 
+								onfocus="this.placeholder = ''" 
+								onblur="this.placeholder = 'Пароль'"
+								autocomplete="new-password"
+								/>
+							</div>
+							<div class="col-md-12 form-group">
+								<div class="creat_account">
+									<input required type="checkbox" name="selector"/>
+									<label>Даю согласие на обработку данных</label>
+								</div>
+							</div>
+							<p id="info" style="color: red;"></p>
+							<div class="col-md-12 form-group">
+								<button type="submit" value="submit" class="button button-register w-100">Регистрация</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!--================End Login Box Area =================-->
+
+	<!--================Start Модальное окно =================-->
+<div 
+class="modal fade" 
+id="myModal" 
+tabindex="-1" 
+aria-labelledby="exampleModalLabel" 
+aria-hidden="true"
+>
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Вы успешно зарегистрировались</h5>
+			</div>
+			<div class="modal-body">
+			и будете перенаправлены на страницу авторизации через 3 сек
+			</div>
+		</div>
+	</div>
+</div>
+	<!--================End Модальное окно =================-->
+
+	<script>
+		async function sendForm(form) {
+			let formData = new FormData(form);
+			let response = await fetch("addUser", {
+				method: "POST",
+				body: formData,
+			});
+			// console.log(await response.json());
+
+			let serverResp = await response.json();
+
+			if (serverResp.result == "success") {
+				$('#myModal').modal('show');
+				setTimeout(() => {
+					location.href = "login";
+				}, 3000);
+			} else if (serverResp.result == "exist") {
+				info.innerText = 'Такой пользователь уже существует!';
+			}
+		}
+	</script>
