@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <style>
+        .smallBox {
+            width: 150px;
+            height: 150px;
+            position: absolute;
+        }
+        #bigBox {
+            width: 300px;
+            height: 300px;
+            position: absolute;
+            margin-left: 30%;
+            margin-top: 100px;
+        }
+    </style>
+
+</head>
+<body>
+
+    <div class="row">
+        <div class="col">
+            <div class="smallBox" style="background-color: #a2cdf2;"></div>
+            <div class="smallBox" style="background-color: #dea2f2; margin-top: 160px;"></div>
+            <div class="smallBox" style="background-color: #a2f2d3; margin-top: 320px;"></div>
+            <div class="smallBox" style="background-color: #f2a2a2; margin-top: 480px;"></div>
+        </div>
+
+        <div class="col">
+            <div id="bigBox" style="background-color: #a9adb0;"></div>
+        </div>
+        
+    </div>
+
+        <script>
+            let smallBoxes = document.querySelectorAll(".smallBox");
+            let bigBox = document.getElementById("bigBox");
+
+            for(smallBox of smallBoxes) {
+                smallBox.onmousedown = function(e) {
+                    
+                smallBox.ondragstart = function() {
+                    return false;
+                };
+                    
+                    smallBox = e.currentTarget;
+                    smallBox.style.position = "absolute";
+                    smallBox.style.zIndex = 1000;
+                    smallBox.style.margin = 0;
+
+                    document.addEventListener("mousemove", moveSmallBox);
+
+                    onmouseup = function() {
+                        smallBox.style.zIndex = 1;
+                        document.removeEventListener("mousemove", moveSmallBox);
+
+                        let smallBox_top = smallBox.getBoundingClientRect().top;
+                        let smallBox_left = smallBox.getBoundingClientRect().left;
+                        let smallBox_right = smallBox.getBoundingClientRect().right;
+                        let smallBox_bottom = smallBox.getBoundingClientRect().bottom;
+                        
+                        let bigBox_top = bigBox.getBoundingClientRect().top;
+                        let bigBox_left = bigBox.getBoundingClientRect().left;
+                        let bigBox_right = bigBox.getBoundingClientRect().right;
+                        let bigBox_bottom = bigBox.getBoundingClientRect().bottom;
+
+                        if (smallBox_top > bigBox_top && smallBox_bottom < bigBox_bottom && smallBox_left > bigBox_left && smallBox_right < bigBox_right) {
+                            smallBox.hidden = true;
+                            bigBox.style.backgroundColor = smallBox.style.backgroundColor;
+                        }
+                    }
+
+                    function moveSmallBox() {
+                        let x = event.clientX - 75;
+                        let y = event.clientY - 75;
+
+                        smallBox.style.top = y + "px";
+                        smallBox.style.left = x + "px";
+                    }
+                }
+            }
+        </script>
+    </div>
+</body>
+</html>
